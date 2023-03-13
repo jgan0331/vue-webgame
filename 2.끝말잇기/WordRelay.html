@@ -9,20 +9,30 @@
 </head>
 <body>
     <div id="root">
-        <div>{{word}}</div>
-        <form v-on:submit="onSubmitForm">
-            <input type="text" ref="answer" v-model="value">
-            <button type="submit">입력!</button>
-        </form>
-        <div id="result">{{result}}</div>
+        <word-relay start-word="제로초"></word-relay>
+        <word-relay start-word="초밥"></word-relay>
+        <word-relay start-word="바보"></word-relay>
     </div>
     <script>
-        const app = new Vue({
-            el: '#root',
-            data: {
-                word: '제로초',
+    //뷰 컴포넌트 : 같은 걸 랜더링, 중복 제거
+        Vue.component('wordRelay' ,{
+            template: `
+            <div>
+                <div>{{word}}</div>
+                    <form v-on:submit="onSubmitForm">
+                        <input type="text" ref="answer" v-model="value">
+                        <button type="submit">입력!</button>
+                    </form>
+                <div id="result">{{result}}</div>
+            </div>
+            `,
+            props: ['startWord'],//html 단에서 케밥케이스로 사용해도 자동으로 카멜 케이스로 변환해줘서 사용가능
+            data() { //데이터를 새로운 객체로 반환하기 위해 함수형으로 리턴해야함
+                return {
+                word: this.startWord,
                 value: '',
                 result: '',
+                }
             },
             methods: {
                 onSubmitForm(e){
@@ -38,7 +48,13 @@
                         this.$refs.answer.focus;
                     }
                 }
-            },
+            }
+        })//파스칼 or 케밥 케이스 
+    </script>
+    <script>
+    // 뷰 인스턴스
+        const app = new Vue({
+            el: '#root',
         });
     </script>
 </body>
